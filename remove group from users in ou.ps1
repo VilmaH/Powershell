@@ -1,7 +1,7 @@
 ﻿#This script removes GROUP group from users that are in the OUs defined in $sb.
 
-$logfile = "logfile.log"
-$sb = "OU=Disabled,DC=example,DC=com","OU=Deleted,DC=example,DC=com" 
+$logfile = 'logfile.log'
+$sb = 'OU=Disabled,DC=example,DC=com','OU=Deleted,DC=example,DC=com'
 
 foreach($search in $sb){
     
