@@ -27,11 +27,13 @@ process {
 
         if ($null -eq $cn) {
             Write-Error "No certificate found for serial $serial" -ErrorAction Continue
-        }
-        #if the returned array is longer than 1, we have multiple certificates
-        elseif ($cn.Length -gt 1) {
-            Write-Error "Multiple certificates found for serial $serial" -ErrorAction Continue
+        
         }else {
+            #if the returned array is longer than 1, we have multiple certificates
+            if ($cn.Length -gt 1) {
+                Write-Warning "Multiple certificates found for serial $serial, installing most recent" -WarningAction Continue
+                $cn = $cn[-1]
+            }
             #we proceed to get the binary data from the ldap connection
             $ldapcert = Find-LDAPObject -LdapConnection $ldapconnection -searchFilter:"(ObjectClass=*)" -searchBase $cn -searchScope Base -RangeSize 0 -PropertiesToLoad:@("userCertificate;binary") -BinaryProperties:@("userCertificate;binary")
             $certificatebinary = $ldapcert."userCertificate;binary"
