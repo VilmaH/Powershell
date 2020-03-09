@@ -1,4 +1,4 @@
-﻿##################################################
+##################################################
 # 
 # This sricpt checks if given string is a correct Finnish social security number.
 # Tämä skripti tarkistaa annetun suomalaisen henkilötunnuksen oikeellisuuden.
@@ -11,7 +11,7 @@
 $hetu = Read-Host 'Anna tarkistettava henkilötunnus'
 
 #List of correct checkup characters
-$takistusmerkki = @{
+$tarkistusmerkki = @{
 0 = '0'
 1 = '1'
 2 = '2'
@@ -49,8 +49,9 @@ $takistusmerkki = @{
 #Basic regex check
 if($hetu -match '^(0[1-9]|[1-2]\d|3[01])(0[1-9]|1[0-2])(\d\d)([-+A])(\d\d\d)([0-9A-FHJ-NPR-Y])$')
 {
+    $check = $hetu.Substring(0,6) + $hetu.Substring(7,3)
     #Take the running number and it's modulo 31 and check against list of correct characters
-    if($hetu.Substring(7,3) % 31 -match $tarkistusmerkki){
+    if($hetu.Substring(10,1) -match $tarkistusmerkki[$check % 31]){
         Write-Host "$hetu on suomalainen henkilötunnus"
     }else{
     Write-Host "$hetu ei ole suomalainen henkilötunnus"
